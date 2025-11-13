@@ -4,7 +4,7 @@ import {
   useContext,
   useEffect,
   useState,
-  useTransition
+  useTransition,
 } from "react";
 import Cookies from "universal-cookie";
 import { MainContext } from "./MainContext";
@@ -18,7 +18,7 @@ import { useErrorBoundary } from "react-error-boundary";
 export const ApisContext = createContext();
 
 export default function ApisContextProvider({ children }) {
-  const BASUE__URL = "https://sanadedu.azurewebsites.net/api/v1/";
+  const BASUE__URL = "https://18.132.37.18/api/v1/";
   // const selectedExam = JSON.parse(sessionStorage.getItem("selectedExam"));
 
   const tens = [2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -47,7 +47,7 @@ export default function ApisContextProvider({ children }) {
 
     Toggler,
     setToggler,
-    deletedAssistant
+    deletedAssistant,
   } = useContext(MainContext);
   let cookie = new Cookies();
   let token = cookie.get("userToken");
@@ -84,7 +84,7 @@ export default function ApisContextProvider({ children }) {
     teacherAssistants: false,
     sessions: false,
     userDetails: false,
-    courseDetails: false
+    courseDetails: false,
   });
   const [deletedTaId, setdeletedTaId] = useState(null);
   const [handleDeletTa, sethandleDeletTa] = useState(false);
@@ -147,10 +147,10 @@ export default function ApisContextProvider({ children }) {
         `${BASUE__URL}course-requests`,
         {
           centerId: centerDetails?._id,
-          tutorCoursesId: selectedCourseId
+          tutorCoursesId: selectedCourseId,
         },
         {
-          headers: headers
+          headers: headers,
         }
       );
 
@@ -216,7 +216,7 @@ export default function ApisContextProvider({ children }) {
   const getCourseById = async (id) => {
     try {
       const res = await axios.get(`${BASUE__URL}tutor-courses/${id}`, {
-        headers: headers
+        headers: headers,
       });
       setcourseDetails(res.data.data);
       return res.data.data;
@@ -231,7 +231,7 @@ export default function ApisContextProvider({ children }) {
     queryFn: () => getCourseById(id),
     enabled: !!headers["auth-token"] && !!id,
     refetchOnMount: true,
-    refetchIntervalInBackground: true
+    refetchIntervalInBackground: true,
   });
 
   const [topicLoading, settopicLoading] = useState(false);
@@ -239,7 +239,7 @@ export default function ApisContextProvider({ children }) {
   const getTopics = async (id) => {
     try {
       const res = await axios.get(`${BASUE__URL}tutor-courses/${id}/topics`, {
-        headers: headers
+        headers: headers,
       });
       setTopics(res.data.data);
       return res.data.data;
@@ -255,10 +255,10 @@ export default function ApisContextProvider({ children }) {
       "fetchTopics",
       `${id}`,
       `${topicLoading}`,
-      `${handleDeletTopic}`
+      `${handleDeletTopic}`,
     ],
     queryFn: () => getTopics(id),
-    enabled: !!headers["auth-token"] && !!id
+    enabled: !!headers["auth-token"] && !!id,
   });
 
   // topics for selectedCourse
@@ -285,10 +285,10 @@ export default function ApisContextProvider({ children }) {
     queryKey: [
       "fetchTopicsForCourse",
       `${selectedCourse?._id}`,
-      `${topicLoading}`
+      `${topicLoading}`,
     ],
     queryFn: () => getTopicsForCourse(),
-    enabled: !!headers["auth-token"] && !!selectedCourse
+    enabled: !!headers["auth-token"] && !!selectedCourse,
   });
 
   const [handleAssToCourse, sethandleAssToCourse] = useState(false);
@@ -320,12 +320,12 @@ export default function ApisContextProvider({ children }) {
       `${id}`,
       `${isAssistantDeleted}`,
       `${handleDeletTa}`,
-      `${handleAssToCourse}`
+      `${handleAssToCourse}`,
       // `${isAssistantDeleted}`,
     ],
     queryFn: () => getAss(),
     enabled: !!id && Role === 3,
-    refetchOnMount: true
+    refetchOnMount: true,
   });
 
   const deletAssistantfn = async (id) => {
@@ -334,7 +334,7 @@ export default function ApisContextProvider({ children }) {
       const res = await axios.patch(
         `${BASE_URL}tutor-courses/${id}/tutor-assistants/`,
         {
-          tAs: [`${deletedAssistant}`]
+          tAs: [`${deletedAssistant}`],
         },
         { headers: headers }
       );
@@ -345,7 +345,7 @@ export default function ApisContextProvider({ children }) {
         setisAssistantDeleted((prev) => !prev);
         setToggler({
           ...Toggler,
-          deletAssistant: false
+          deletAssistant: false,
         });
       }
     } catch (error) {
@@ -372,7 +372,7 @@ export default function ApisContextProvider({ children }) {
           sethandleDeletTa((prev) => !prev);
           setToggler({
             ...Toggler,
-            deletTa: false
+            deletTa: false,
           });
         }
       } catch (error) {
@@ -389,7 +389,7 @@ export default function ApisContextProvider({ children }) {
     if (token !== undefined) {
       return await axios
         .get(`${BASE_URL}grades/?fields=nameEn,-_id,nameAr`, {
-          headers: headers
+          headers: headers,
         })
         .then((response) => {
           if (response.status == 200 || response.data.status === "success") {
@@ -409,8 +409,8 @@ export default function ApisContextProvider({ children }) {
         { en: "Students", ar: t("homepage.studentsNum") },
         { en: "Assistants", ar: t("homepage.assistantNum") },
         // { en: "Centers", ar: t("homepage.centersNum") },
-        { en: "Exams", ar: t("homepage.examsName") }
-      ]
+        { en: "Exams", ar: t("homepage.examsName") },
+      ],
     },
 
     {
@@ -421,9 +421,9 @@ export default function ApisContextProvider({ children }) {
         { en: "Term", ar: t("coursesTable.term") },
         { en: "Assistants", ar: t("homepage.assistantNum") },
         { en: "Sessions", ar: t("SingleCourse.sessionsNum") },
-        { en: "Topics", ar: t("SingleCourse.topicsNum") }
+        { en: "Topics", ar: t("SingleCourse.topicsNum") },
         // { en: "Centers", ar: t("SingleCourse.centersNum") }
-      ]
+      ],
     },
     {
       path: "/",
@@ -431,10 +431,10 @@ export default function ApisContextProvider({ children }) {
       labels: [
         { en: "Course ", ar: t("homepage.courseName") },
         { en: "Teacher", ar: t("coursesTable.teacherName") },
-        { en: "Students", ar: t("homepage.studentsNum") }
+        { en: "Students", ar: t("homepage.studentsNum") },
         // { en: "Groups", ar: t("coursesTable.groupsNum") },
         // { en: "Centers", ar: t("SingleCourse.centersNum") }
-      ]
+      ],
     },
 
     {
@@ -444,10 +444,10 @@ export default function ApisContextProvider({ children }) {
         { en: "Course ", ar: t("homepage.courseName") },
         { en: "Teacher", ar: t("coursesTable.teacherName") },
         { en: "Sessions", ar: t("SingleCourse.sessionsNum") },
-        { en: "Topics", ar: t("SingleCourse.topicsNum") }
+        { en: "Topics", ar: t("SingleCourse.topicsNum") },
         // { en: "Centers", ar: t("SingleCourse.centersNum") }
-      ]
-    }
+      ],
+    },
   ]);
   const [handleAddCourse, sethandleAddCourse] = useState(false);
   const [selectedCourseAlerts, setselectedCourseAlerts] = useState({});
@@ -464,7 +464,7 @@ export default function ApisContextProvider({ children }) {
             setTeacherCourses(res.data.data);
             setallCoursesToFilterInExams([
               { name: t("task.all"), _id: "" },
-              ...res.data.data
+              ...res.data.data,
             ]);
             setfilteredCourse({ name: t("task.all"), _id: "" });
             return res.data.data;
@@ -481,13 +481,13 @@ export default function ApisContextProvider({ children }) {
   const fetchTutorCourse = useQuery({
     queryKey: ["getTeacherCourses", `${handleAddCourse}`],
     queryFn: () => getTeacherCourses(),
-    enabled: !!headers["auth-token"]
+    enabled: !!headers["auth-token"],
   });
 
   async function getAllTeacherAssistants() {
     try {
       const res = await axios.get(`${BASE_URL}tutor-assistants`, {
-        headers: headers
+        headers: headers,
       });
 
       if (res.status === 200 || res.data.status === "success") {
@@ -507,10 +507,10 @@ export default function ApisContextProvider({ children }) {
       `${handleAssAssitant}`,
       `${handleAssToCourse}`,
       `${isAssistantDeleted}`,
-      `${handleDeletTa}`
+      `${handleDeletTa}`,
     ],
     queryFn: () => getAllTeacherAssistants(),
-    enabled: !!headers["auth-token"] && Role === 3
+    enabled: !!headers["auth-token"] && Role === 3,
   });
 
   const [assLoading, setassLoading] = useState(false);
@@ -518,7 +518,7 @@ export default function ApisContextProvider({ children }) {
     try {
       setassLoading(true);
       const res = await axios.post(`${BASE_URL}tutor-assistants`, values, {
-        headers: headers
+        headers: headers,
       });
 
       if (res.data.status === "success" || res.status === 200) {
@@ -555,7 +555,7 @@ export default function ApisContextProvider({ children }) {
     try {
       setaddCourseLoading(true);
       const res = await axios.post(`${BASUE__URL}tutor-courses`, values, {
-        headers: headers
+        headers: headers,
       });
 
       if (res.status === 200 || res.data.status === "success") {
@@ -604,7 +604,7 @@ export default function ApisContextProvider({ children }) {
         setdataToPaginate(res?.data?.data);
         setSessionsToFitler([
           { name: t("task.all"), _id: "" },
-          ...res.data.data?.reverse()
+          ...res.data.data?.reverse(),
         ]);
         setsearchBySesion({ name: t("task.all"), _id: "" });
         return res.data.data;
@@ -621,10 +621,10 @@ export default function ApisContextProvider({ children }) {
       `${id}`,
       `${handleAddSession}`,
       `${handleAttendance}`,
-      `${handleToggleContent}`
+      `${handleToggleContent}`,
     ],
     queryFn: () => getSessionsTeacher(),
-    enabled: !!id && !!token
+    enabled: !!id && !!token,
   });
 
   // get spcific sessions
@@ -675,10 +675,10 @@ export default function ApisContextProvider({ children }) {
     queryKey: [
       "getAllSessionsForCourse",
       `${selectedCourse?._id}`,
-      `${handleAddSession}`
+      `${handleAddSession}`,
     ],
     queryFn: () => getAllSessionsForCourse(),
-    enabled: !!headers["auth-token"] && !!selectedCourse?._id
+    enabled: !!headers["auth-token"] && !!selectedCourse?._id,
   });
 
   const [selectedExam, setselectedExam] = useState(null);
@@ -706,7 +706,7 @@ export default function ApisContextProvider({ children }) {
   const fetchSpcificSessionsForSingleExam = useQuery({
     queryKey: ["getSpcificSessions", `${tutorCourse}`, `${handleAddSession}`],
     queryFn: () => getSpcificSessionsForSingleExam(),
-    enabled: !!headers["auth-token"] && !!tutorCourse
+    enabled: !!headers["auth-token"] && !!tutorCourse,
   });
 
   const getSpcificSessionsToCourse = async () => {
@@ -730,7 +730,7 @@ export default function ApisContextProvider({ children }) {
   const fetchSpcificSessionsToCourse = useQuery({
     queryKey: ["getSpcificSessions", `${id}`, `${handleAddSession}`],
     queryFn: () => getSpcificSessionsToCourse(),
-    enabled: !!headers["auth-token"] && !!id
+    enabled: !!headers["auth-token"] && !!id,
   });
 
   const getOfflineExamSessions = async () => {
@@ -753,10 +753,10 @@ export default function ApisContextProvider({ children }) {
     queryKey: [
       "getOfflineExamSessions",
       `${selectedCourse?._id}`,
-      `${handleAddSession}`
+      `${handleAddSession}`,
     ],
     queryFn: () => getOfflineExamSessions(),
-    enabled: !!headers["auth-token"] && !!selectedCourse?._id
+    enabled: !!headers["auth-token"] && !!selectedCourse?._id,
   });
 
   const [loadingAddAss, setloadingAddAss] = useState(false);
@@ -790,7 +790,7 @@ export default function ApisContextProvider({ children }) {
   const getGroups = async () => {
     try {
       const res = await axios.get(`${BASE_URL}tutors/groups/?limit=-1`, {
-        headers: headers
+        headers: headers,
       });
 
       if (res.data.status === "success" || res.status === 200) {
@@ -809,7 +809,7 @@ export default function ApisContextProvider({ children }) {
   const fetchGroups = useQuery({
     queryKey: ["getGroups"],
     queryFn: () => getGroups(),
-    enabled: !!headers["auth-token"] && Role === 3
+    enabled: !!headers["auth-token"] && Role === 3,
   });
 
   const [CoursesGrades, setCoursesGrades] = useState([]);
@@ -818,7 +818,7 @@ export default function ApisContextProvider({ children }) {
     if (selectedGrade != "") {
       try {
         const res = await axios.get(
-          `https://sanadedu.azurewebsites.net/api/v1/grades/${selectedGrade?._id}/courses`,
+          `https://18.132.37.18/api/v1/grades/${selectedGrade?._id}/courses`,
           { headers: headers }
         );
         if (res.status === 200 || res.data.status === "success") {
@@ -836,7 +836,7 @@ export default function ApisContextProvider({ children }) {
   const fetchCoursesGrades = useQuery({
     queryKey: ["fetchCoursesGrades", `${selectedGrade?._id}`],
     queryFn: () => GetCoursesGrades(),
-    enabled: !!headers["auth-token"] && !!selectedGrade
+    enabled: !!headers["auth-token"] && !!selectedGrade,
   });
   const [selectedSession, setselectedSession] = useState(null);
 
@@ -866,7 +866,7 @@ export default function ApisContextProvider({ children }) {
 
   const options = [
     { name: t("exam.yes"), value: true },
-    { name: t("exam.no"), value: false }
+    { name: t("exam.no"), value: false },
   ];
   const [selectedAnsType, setselectedAnsType] = useState(options[1]);
   const [questionsCoursePage, setquestionsCoursePage] = useState(1);
@@ -946,7 +946,7 @@ export default function ApisContextProvider({ children }) {
     { name: t("exam.easy"), value: "L" },
     { name: t("exam.hard"), value: "H" },
     { name: t("exam.normal"), value: "M" },
-    { name: t("task.all"), allV: "" }
+    { name: t("task.all"), allV: "" },
   ];
   const [examQCurrentPage, setexamQCurrentPage] = useState(1);
   const [handleAddQToExam, sethandleAddQToExam] = useState(false);
@@ -1102,10 +1102,10 @@ export default function ApisContextProvider({ children }) {
       `${handleDeletQExam}`,
       `${handleAddQToExam}`,
       `${deletExam}`,
-      `${handleAddExamBank}`
+      `${handleAddExamBank}`,
     ],
     queryFn: () => getTutorExamsCourse(),
-    enabled: !!headers["auth-token"] && !!examsCoursePage && !!id && Role === 4
+    enabled: !!headers["auth-token"] && !!examsCoursePage && !!id && Role === 4,
   });
 
   // add Question to singleExam in exams paeg
@@ -1176,7 +1176,7 @@ export default function ApisContextProvider({ children }) {
       `${handleAddQToExam}`,
       `${examId}`,
       `${periorety?.value}`,
-      `${handleDeletQExam}`
+      `${handleDeletQExam}`,
       // `${handleAddQToCourse}`,
       // `${handleAddQToExam}`,
     ],
@@ -1188,7 +1188,7 @@ export default function ApisContextProvider({ children }) {
       examType === "online",
     placeholderData: true,
     keepPreviousData: true,
-    staleTime: 5000
+    staleTime: 5000,
   });
 
   // get questions of queston bank
@@ -1220,13 +1220,13 @@ export default function ApisContextProvider({ children }) {
       `${id}`,
       `${searchBySesion?._id}`,
       `${handleDeletQCourse}`,
-      `${handleAddQToExam}`
+      `${handleAddQToExam}`,
     ],
     queryFn: () => getQuestionsForCoruse(),
     enabled: !!headers["auth-token"] && !!id,
     placeholderData: true,
     keepPreviousData: true,
-    staleTime: 5000
+    staleTime: 5000,
   });
 
   // add exam to exams in exams page
@@ -1342,10 +1342,10 @@ export default function ApisContextProvider({ children }) {
       `${handleDeletQExam}`,
       `${handleAddQToExam}`,
       `${deletExam}`,
-      `${handleAddExamBank}`
+      `${handleAddExamBank}`,
     ],
     queryFn: () => getTutorExams(),
-    enabled: !!headers["auth-token"] && !!examsPage && Role === 3
+    enabled: !!headers["auth-token"] && !!examsPage && Role === 3,
   });
 
   const [handleDeletLoading, sethandleDeletLoading] = useState(false);
@@ -1416,14 +1416,14 @@ export default function ApisContextProvider({ children }) {
   const fetchTopicsForExam = useQuery({
     queryKey: ["fetchTopicsForExam", `${tutorCourse}`, `${topicLoading}`],
     queryFn: () => getTopicsForExam(),
-    enabled: !!headers["auth-token"] && !!tutorCourse
+    enabled: !!headers["auth-token"] && !!tutorCourse,
   });
 
   // auto generate exam
   const [maxQ, setmaxQ] = useState({
     H: "",
     M: "",
-    L: ""
+    L: "",
   });
 
   const handleMessage = (message) => {
@@ -1439,7 +1439,7 @@ export default function ApisContextProvider({ children }) {
     setmaxQ({
       H: hCount,
       M: mCount,
-      L: lCount
+      L: lCount,
     });
   };
   const [qGenerated, setqGenerated] = useState([]);
@@ -1464,7 +1464,7 @@ export default function ApisContextProvider({ children }) {
           setToggler({
             ...Toggler,
             autoQusetions: true,
-            qbank: false
+            qbank: false,
           });
         }
       } catch (error) {
@@ -1574,19 +1574,19 @@ export default function ApisContextProvider({ children }) {
       `${selectedExamId}`,
       `${studentsCurrentPage}`,
       `${handleAddGrade}`,
-      `${tutorCourse}`
+      `${tutorCourse}`,
     ],
     queryFn: () => getStudents(),
     enabled: !!headers["auth-token"] && !!tutorCourse && !!selectedExamId,
     placeholderData: true,
-    keepPreviousData: true
+    keepPreviousData: true,
   });
 
   const [requestPage, setrequestPage] = useState(1);
   const mainTypes = [
     { name: t("homepage.pending"), status: "pending" },
     { name: t("homepage.accepted"), status: "accepted" },
-    { name: t("homepage.rejected"), status: "rejected" }
+    { name: t("homepage.rejected"), status: "rejected" },
   ];
 
   // const [selectedTypeN, setselectedTypeN] = useState(mainTypes[0]);
@@ -1635,7 +1635,7 @@ export default function ApisContextProvider({ children }) {
   async function getTutorKeyForTa() {
     try {
       const res = await axios.get(`${BASE_URL}tutors/details`, {
-        headers: headers
+        headers: headers,
       });
 
       return res.data.data;
@@ -1649,7 +1649,7 @@ export default function ApisContextProvider({ children }) {
     queryFn: () => getTutorKeyForTa(),
     enabled: !!headers["auth-token"],
     refetchIntervalInBackground: true,
-    refetchOnWindowFocus: "always"
+    refetchOnWindowFocus: "always",
   });
 
   // console.log(fetchTutorKeyForTa.data);
@@ -1858,7 +1858,7 @@ export default function ApisContextProvider({ children }) {
         // handleAddCenter,
         // sethandleAddCenter,
 
-        isValidInput
+        isValidInput,
       }}
     >
       {children}

@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 export const MainContext = createContext();
 export default function MainContextProvider(props) {
   const [t] = useTranslation();
-  const URLBase = "https://sanadedu.azurewebsites.net/api/v1/";
+  const URLBase = "https://18.132.37.18/api/v1/";
   const [selectedGover, setselectedGover] = useState(ourCites.data[0]);
   const [selectedCity, setselectedCity] = useState(ourCites.data[0].cities[16]);
   let Cookie = new Cookies();
@@ -52,7 +52,7 @@ export default function MainContextProvider(props) {
     showAddTask: false,
     showAddAssistant: false,
     showAddCenter: false,
-    addCourse: false
+    addCourse: false,
   });
 
   const [showSingleCoursePopupWindow, setSingleCoursePopupWindow] =
@@ -100,7 +100,7 @@ export default function MainContextProvider(props) {
       progress: undefined,
 
       theme: "colored",
-      style: { position: "relative", zIndex: 10000, fontSize: "14px" }
+      style: { position: "relative", zIndex: 10000, fontSize: "14px" },
     });
   }
 
@@ -109,7 +109,7 @@ export default function MainContextProvider(props) {
     verifyEmail: false,
     register: false,
     forget: false,
-    reset: false
+    reset: false,
   });
 
   const [Toggler, setToggler] = useState({
@@ -143,7 +143,7 @@ export default function MainContextProvider(props) {
     deletTa: false,
     deletTopic: false,
     openAttendance: false,
-    terms: false
+    terms: false,
   });
 
   const [newAnswer, setNewAnswer] = useState("");
@@ -182,7 +182,7 @@ export default function MainContextProvider(props) {
   const Types = [
     { name: t("homepage.free"), value: 0 },
     { name: t("homepage.attendance"), value: 1 },
-    { name: t("homepage.payed"), value: 2 }
+    { name: t("homepage.payed"), value: 2 },
   ];
 
   const cachedSelectedType = JSON.parse(sessionStorage.getItem("accessLevel"));
@@ -321,7 +321,7 @@ export default function MainContextProvider(props) {
         setToggleMenu,
         userData,
         setForgetPassEmail,
-        forgetPassEmail
+        forgetPassEmail,
       }}
     >
       {props.children}

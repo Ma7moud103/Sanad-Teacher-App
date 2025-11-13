@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.sanadedu.com/api/v1/";
+export const BASE_URL = "https://18.132.37.18/api/v1/";
 export const BASUE_IMAGES = "https://images.sanadedu.com/";
 
 export function signUpErrors(error, t, navigateTo, ErorrMessage, setstep) {
@@ -33,7 +33,7 @@ export function signUpErrors(error, t, navigateTo, ErorrMessage, setstep) {
         setstep(0);
         navigateTo("/signup");
       }
-  });
+    });
   } else if (
     error.response.data.message === "phone number already registered"
   ) {
